@@ -428,17 +428,19 @@ public class JudgeManager {
 			for (Note note = lanemodel.getNote(); note != null && note.getTime() < time + judge[3][0]; note = lanemodel.getNote()) {
 				final int jud = note.getTime() - time;
 				if (note instanceof NormalNote && note.getState() == 0) {
-					if (!(pmsjudge && note.getPlayTime() != 0)) {
+					if (pmsjudge && note.getPlayTime() != 0) {
+						note.setState(5);
+					} else {
 						this.update(lane, note, time, 4, jud);
 					}
 				} else if (note instanceof LongNote) {
 					final LongNote ln = (LongNote) note;
 					final int lntype = ln.getType() == LongNote.TYPE_UNDEFINED ? this.lntype : ln.getType();
 					if (!ln.isEnd() && note.getState() == 0) {
-						if ((lntype == LongNote.TYPE_CHARGENOTE || lntype == LongNote.TYPE_HELLCHARGENOTE)
-								&& ln.getPair().getState() == 0) {
+						if (lntype == LongNote.TYPE_CHARGENOTE || lntype == LongNote.TYPE_HELLCHARGENOTE) {
 							// System.out.println("CN start poor");
 							if (pmsjudge && note.getPlayTime() != 0) {
+								note.setState(5);
 								this.update(lane, ln.getPair(), time, 4, jud);
 							} else {
 								this.update(lane, note, time, 4, jud);
@@ -447,7 +449,9 @@ public class JudgeManager {
 						}
 						if (lntype == LongNote.TYPE_LONGNOTE && processing[lane] != ln.getPair()) {
 							// System.out.println("LN start poor");
-							if (!(pmsjudge && note.getPlayTime() != 0)) {
+							if (pmsjudge && note.getPlayTime() != 0) {
+								note.setState(5);
+							} else {
 								this.update(lane, note, time, 4, jud);
 							}
 						}
