@@ -428,29 +428,35 @@ public class JudgeManager {
 			for (Note note = lanemodel.getNote(); note != null && note.getTime() < time + judge[3][0]; note = lanemodel.getNote()) {
 				final int jud = note.getTime() - time;
 				if (note instanceof NormalNote && note.getState() == 0) {
-					this.update(lane, note, time, 4, jud);
+					if (!(pmsjudge && note.getPlayTime() != 0)) {
+						this.update(lane, note, time, 4, jud);
+					}
 				} else if (note instanceof LongNote) {
 					final LongNote ln = (LongNote) note;
+					final int lntype = ln.getType() == LongNote.TYPE_UNDEFINED ? this.lntype : ln.getType();
 					if (!ln.isEnd() && note.getState() == 0) {
-						if ((lntype != BMSModel.LNTYPE_LONGNOTE && ln.getType() == LongNote.TYPE_UNDEFINED)
-								|| ln.getType() == LongNote.TYPE_CHARGENOTE
-								|| ln.getType() == LongNote.TYPE_HELLCHARGENOTE) {
+						if ((lntype == LongNote.TYPE_CHARGENOTE || lntype == LongNote.TYPE_HELLCHARGENOTE)
+								&& ln.getPair().getState() == 0) {
 							// System.out.println("CN start poor");
-							this.update(lane, note, time, 4, jud);
-							this.update(lane, ((LongNote) note).getPair(), time, 4, jud);
+							if (pmsjudge && note.getPlayTime() != 0) {
+								this.update(lane, ln.getPair(), time, 4, jud);
+							} else {
+								this.update(lane, note, time, 4, jud);
+								this.update(lane, ln.getPair(), time, 4, jud);
+							}
 						}
-						if (((lntype == BMSModel.LNTYPE_LONGNOTE && ln.getType() == LongNote.TYPE_UNDEFINED)
-								|| ln.getType() == LongNote.TYPE_LONGNOTE) && processing[lane] != ln.getPair()) {
+						if (lntype == LongNote.TYPE_LONGNOTE && processing[lane] != ln.getPair()) {
 							// System.out.println("LN start poor");
-							this.update(lane, note, time, 4, jud);
+							if (!(pmsjudge && note.getPlayTime() != 0)) {
+								this.update(lane, note, time, 4, jud);
+							}
 						}
 
 					}
-					if (((lntype != BMSModel.LNTYPE_LONGNOTE && ln.getType() == LongNote.TYPE_UNDEFINED)
-							|| ln.getType() == LongNote.TYPE_CHARGENOTE || ln.getType() == LongNote.TYPE_HELLCHARGENOTE)
-							&& ((LongNote) note).isEnd() && ((LongNote) note).getState() == 0) {
+					if ((lntype == LongNote.TYPE_CHARGENOTE || lntype == LongNote.TYPE_HELLCHARGENOTE)
+							&& ln.isEnd() && ln.getState() == 0) {
 						// System.out.println("CN end poor");
-						this.update(lane, ((LongNote) note), time, 4, jud);
+						this.update(lane, note, time, 4, jud);
 						processing[lane] = null;
 						if (sc >= 0) {
 							sckey[sc] = 0;
