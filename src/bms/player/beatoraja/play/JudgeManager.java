@@ -392,30 +392,9 @@ public class JudgeManager {
 						this.judge[player[lane]][offset[lane]] = 0;
 						
 						// 空POOR判定がないときのキー音処理
-						Note n = null;
-						boolean sound = false;
-						
-						for(Note note : lanemodel.getHiddens()) {
-							if(note.getTime() >= ptime) {
-								break;
-							}
-							n = note;
-						}
-						
-						for(Note note : lanemodel.getNotes()) {
-							if ((n == null || n.getTime() <= note.getTime()) 
-									&& !(note instanceof LongNote && note.getState() != 0)) {
-								n = note;
-							}
-							if (n != null && note.getTime() >= ptime) {
-								main.play(n, config.getKeyvolume(), 0);
-								sound = true;
-								break;
-							}							
-						}
-						
-						if (!sound && n != null) {
-							main.play(n, config.getKeyvolume(), 0);
+						Note n = algorithm.getFreeNoteMultiLane(lanes, ptime, lane);
+						if (n != null) {
+							main.play(n, config.getKeyvolume(), -algorithm.getLaneOffset());
 						}
 					}
 				}

@@ -48,6 +48,7 @@ public enum JudgeAlgorithm {
 	;
 
 	private int judge;
+	private int laneOffset;
 
 	/**
 	 * 判定対象ノーツを取得する
@@ -88,6 +89,7 @@ public enum JudgeAlgorithm {
 			}
 		}
 		this.judge = judge;
+		this.laneOffset = 0;
 		return note;
 	}
 
@@ -97,6 +99,74 @@ public enum JudgeAlgorithm {
 	 */
 	public int getJudge() {
 		return judge;
+	}
+
+	/**
+	 * 判定対象ノーツのレーンのずれを取得する
+	 */
+	public int getLaneOffset() {
+		return laneOffset;
+	}
+
+	// 空POOR判定がないときのキー音取得(マルチレーン)
+	public Note getFreeNoteMultiLane(Lane[] lanes, long ptime, int lane) {
+		Note n = null;
+		int laneOffset = 0;
+		long distance = Long.MAX_VALUE;
+
+		// 隠しノートのうち、通過済みで最も新しいものを取得(とりあえず同一レーンだけとする)
+		for (Note note : lanes[lane].getHiddens()) {
+			if (note.getTime() >= ptime) {
+				break;
+			}
+			n = note;
+			laneOffset = 0;
+			distance = getMultiLaneDistance(ptime - note.getTime(), 0);
+		}
+
+		for (int i = Math.max(0, lane - 12); i <= Math.min(lanes.length-1, lane + 12); i++) {
+			Lane lanemodel =lanes[i];
+			Note n1 = null;
+			// レーン内で現在位置に最も近いノートを取得
+			for (Note note : lanemodel.getNotes()) {
+				if (note instanceof LongNote && note.getState() != 0)
+					continue;
+				if (note.getTime() >= ptime) {
+					if (n1 == null || note.getTime() - ptime < ptime - n1.getTime()) {
+						n1 = note;
+					}
+					break;
+				} else {
+					n1 = note;
+				}
+			}
+			if (n1 != null) {
+				long dist = getMultiLaneDistance(n1.getTime() - ptime, i - lane);
+				if (dist < distance) {
+					n = n1;
+					laneOffset = i - lane;
+					distance = dist;
+				}
+			}
+		}
+
+		this.laneOffset = laneOffset;
+		return n;
+	}
+
+	private long getMultiLaneDistance(long timeOffset, int laneOffset) {
+		long absTimeOffset = Math.abs(timeOffset);
+		long absLaneOffset = Math.abs(laneOffset);
+		if (absTimeOffset < 500) {
+			// レーン重視
+			return absTimeOffset + absLaneOffset * 1000;
+		} else if (absTimeOffset < 4000) {
+			// 中間
+			return absTimeOffset + absLaneOffset * 250;
+		} else {
+			// 時刻重視
+			return absTimeOffset + absLaneOffset * 100;
+		}
 	}
 
 	/**
