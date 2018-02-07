@@ -141,9 +141,13 @@ public class BMSPlayer extends MainState {
 			}
 
 			if (config.isLegacynote()) {
-				new LongNoteModifier().modify(model);
-				assist = 2;
-				score = false;
+				// LNがなければアシストなし
+				LongNoteModifier mod = new LongNoteModifier();
+				mod.modify(model);
+				if (mod.longNoteExists()) {
+					assist = 2;
+					score = false;
+				}
 			}
 			if (config.getJudgewindowrate() > 100) {
 				assist = 2;
@@ -233,8 +237,23 @@ public class BMSPlayer extends MainState {
 		if(resource.getCourseBMSModels() != null){
 			coursetype = 1;
 			for (CourseData.CourseDataConstraint i : resource.getConstraint()) {
-				if (i == GAUGE_LR2) {
+				switch(i) {
+				case GAUGE_5KEYS:
+					gauges = GaugeProperty.FIVEKEYS;
+					break;
+				case GAUGE_7KEYS:
+					gauges = GaugeProperty.SEVENKEYS;
+					break;
+				case GAUGE_9KEYS:
+					gauges = GaugeProperty.PMS;
+					break;
+				case GAUGE_24KEYS:
+					gauges = GaugeProperty.KEYBOARD;
+					break;
+				case GAUGE_LR2:
 					gauges = GaugeProperty.LR2;
+					break;
+				default:
 					break;
 				}
 			}
