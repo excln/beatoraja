@@ -360,13 +360,6 @@ public abstract class SkinObject implements Disposable {
 	private void prepareColor() {
 		if (fixc != null) {
 			color.set(fixc);
-			for(SkinOffset off :this.off) {
-				if(off != null) {
-					float a = color.a + (off.a / 255.0f);
-					a = a > 1 ? 1 : (a < 0 ? 0 : a);
-					color.a = a;
-				}
-			}
 			return;
 		}
 		getRate();
@@ -388,13 +381,6 @@ public abstract class SkinObject implements Disposable {
 				color.a = r1.a + (r2.a - r1.a) * rate;
 			}
 		}
-		for(SkinOffset off :this.off) {
-			if(off != null) {
-				float a = color.a + (off.a / 255.0f);
-				a = a > 1 ? 1 : (a < 0 ? 0 : a);
-				color.a = a;
-			}
-		}
 	}
 	
 	public Color getColor() {
@@ -404,20 +390,10 @@ public abstract class SkinObject implements Disposable {
 	private void prepareAngle() {
 		if (fixa != Integer.MIN_VALUE) {
 			angle = fixa;
-			for(SkinOffset off :this.off) {
-				if(off != null) {
-					angle += off.r;
-				}
-			}
 			return;
 		}
 		getRate();
 		angle = (rate == 0 || acc == 3 ? dst[index].angle :  (int) (dst[index].angle + (dst[index + 1].angle - dst[index].angle) * rate));
-		for(SkinOffset off :this.off) {
-			if(off != null) {
-				angle += off.r;
-			}
-		}
 	}
 	
 	private void getRate() {
@@ -499,7 +475,19 @@ public abstract class SkinObject implements Disposable {
 		}
 
 		prepareColor();
+		for(SkinOffset off :this.off) {
+			if(off != null) {
+				float a = color.a + (off.a / 255.0f);
+				a = a > 1 ? 1 : (a < 0 ? 0 : a);
+				color.a = a;
+			}
+		}
 		prepareAngle();
+		for(SkinOffset off :this.off) {
+			if(off != null) {
+				angle += off.r;
+			}
+		}
 	}
 
 	public abstract void draw(SkinObjectRenderer sprite);
