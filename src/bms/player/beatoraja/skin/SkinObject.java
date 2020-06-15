@@ -379,7 +379,6 @@ public abstract class SkinObject implements Disposable {
 				color.g = r1.g;
 				color.b = r1.b;
 				color.a = r1.a;
-				return;
 			} else {
 				final Color r1 = dst[index].color;
 				final Color r2 = dst[index + 1].color;
@@ -387,7 +386,6 @@ public abstract class SkinObject implements Disposable {
 				color.g = r1.g + (r2.g - r1.g) * rate;
 				color.b = r1.b + (r2.b - r1.b) * rate;
 				color.a = r1.a + (r2.a - r1.a) * rate;
-				return;
 			}
 		}
 		for(SkinOffset off :this.off) {
