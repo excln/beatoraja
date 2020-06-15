@@ -289,14 +289,7 @@ public abstract class SkinObject implements Disposable {
 		return this.dstblend;
 	}
 
-	/**
-	 * 指定して時間に応じた描画領域を返す
-	 * 
-	 * @param time
-	 *            時間(ms)
-	 * @return 描画領域
-	 */
-	public void prepareRegion(long time, MainState state) {
+	private void prepareTime(long time, MainState state) {
 		final TimerProperty timer = dsttimer;
 
 		if (timer != null) {
@@ -324,11 +317,16 @@ public abstract class SkinObject implements Disposable {
 			return;
 		}
 		nowtime = time;
-		rate = -1;
-		index = -1;
-
-		if (fixr == null) {
+		if (fixr == null || fixc == null || fixa == Integer.MIN_VALUE) {
 			getRate();
+		}
+	}
+
+	/**
+	 * 指定して時間に応じた描画領域を返す
+	 */
+	private void prepareRegion() {
+		if (fixr == null) {
 			if(rate == 0) {
 				region.set(dst[index].region);
 			} else {
@@ -362,7 +360,6 @@ public abstract class SkinObject implements Disposable {
 			color.set(fixc);
 			return;
 		}
-		getRate();
 		if(rate == 0) {
 			color.set(dst[index].color);			
 		} else {
@@ -392,14 +389,10 @@ public abstract class SkinObject implements Disposable {
 			angle = fixa;
 			return;
 		}
-		getRate();
 		angle = (rate == 0 || acc == 3 ? dst[index].angle :  (int) (dst[index].angle + (dst[index + 1].angle - dst[index].angle) * rate));
 	}
-	
+
 	private void getRate() {
-		if(rate != -1) {
-			return;
-		}
 		long time2 = dst[dst.length - 1].time;
 		if(nowtime == time2) {
 			this.rate = 0;
@@ -427,7 +420,7 @@ public abstract class SkinObject implements Disposable {
 		this.rate = 0;
 		this.index = 0;
 	}
-	
+
 	public boolean validate() {
 		return getAllDestination().length > 0;
 	}
@@ -450,7 +443,8 @@ public abstract class SkinObject implements Disposable {
 			}
 		}
 		draw = true;
-		prepareRegion(time, state);
+		prepareTime(time, state);
+		prepareRegion();
 		if (draw) {
 			for (int i = 0; i < off.length; i++) {
 				off[i] = state != null ? state.getOffsetValue(offset[i]) : null;
