@@ -326,9 +326,6 @@ public abstract class SkinObject implements Disposable {
 		nowtime = time;
 		rate = -1;
 		index = -1;
-		for(int i = 0;i < off.length;i++) {
-			off[i] = state != null ? state.getOffsetValue(offset[i]) : null;
-		}
 
 		if (fixr == null) {
 			getRate();
@@ -350,35 +347,8 @@ public abstract class SkinObject implements Disposable {
 					region.height = r1.height + (r2.height - r1.height) * rate;
 				}
 			}
-
-			for(SkinOffset off : this.off) {
-				if (off != null) {
-					if(!relative) {
-						region.x += off.x - off.w / 2;
-						region.y += off.y - off.h / 2;
-					}
-					region.width += off.w;
-					region.height += off.h;
-				}
-			}
-			return;
 		} else {
-			if (offset.length == 0) {
-				region.set(fixr);
-				return;
-			}
 			region.set(fixr);
-			for(SkinOffset off : this.off) {
-				if (off != null) {
-					if(!relative) {
-						region.x += off.x - off.w / 2;
-						region.y += off.y - off.h / 2;
-					}
-					region.width += off.w;
-					region.height += off.h;
-				}
-			}
-			return;
 		}
 	}
 	
@@ -507,6 +477,21 @@ public abstract class SkinObject implements Disposable {
 		}
 		draw = true;
 		prepareRegion(time, state);
+		if (draw) {
+			for (int i = 0; i < off.length; i++) {
+				off[i] = state != null ? state.getOffsetValue(offset[i]) : null;
+			}
+			for(SkinOffset off : this.off) {
+				if (off != null) {
+					if(!relative) {
+						region.x += off.x - off.w / 2;
+						region.y += off.y - off.h / 2;
+					}
+					region.width += off.w;
+					region.height += off.h;
+				}
+			}
+		}
 		region.x += offsetX;
 		region.y += offsetY;
 		if (mouseRect != null && !mouseRect.contains(state.main.getInputProcessor().getMouseX() -region.x,
