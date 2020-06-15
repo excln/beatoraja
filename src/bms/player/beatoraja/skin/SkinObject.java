@@ -318,8 +318,37 @@ public abstract class SkinObject implements Disposable {
 		}
 		nowtime = time;
 		if (fixr == null || fixc == null || fixa == Integer.MIN_VALUE) {
-			getRate();
+			updateRate();
 		}
+	}
+
+	private void updateRate() {
+		long time2 = dst[dst.length - 1].time;
+		if (nowtime == time2) {
+			this.rate = 0;
+			this.index = dst.length - 1;
+			return;
+		}
+		for (int i = dst.length - 2; i >= 0; i--) {
+			final long time1 = dst[i].time;
+			if (time1 <= nowtime && time2 > nowtime) {
+				float rate = (float) (nowtime - time1) / (time2 - time1);
+				switch(acc) {
+				case 1:
+					rate = rate * rate;
+					break;
+				case 2:
+					rate = 1 - (rate - 1) * (rate - 1);
+					break;
+				}
+				this.rate = rate;
+				this.index = i;
+				return;
+			}
+			time2 = time1;
+		}
+		this.rate = 0;
+		this.index = 0;
 	}
 
 	/**
@@ -390,35 +419,6 @@ public abstract class SkinObject implements Disposable {
 			return;
 		}
 		angle = (rate == 0 || acc == 3 ? dst[index].angle :  (int) (dst[index].angle + (dst[index + 1].angle - dst[index].angle) * rate));
-	}
-
-	private void getRate() {
-		long time2 = dst[dst.length - 1].time;
-		if(nowtime == time2) {
-			this.rate = 0;
-			this.index = dst.length - 1;
-			return;
-		}
-		for (int i = dst.length - 2; i >= 0; i--) {
-			final long time1 = dst[i].time;
-			if (time1 <= nowtime && time2 > nowtime) {
-				float rate = (float) (nowtime - time1) / (time2 - time1);
-				switch(acc) {
-				case 1:
-					rate = rate * rate;
-					break;
-				case 2:
-					rate = 1 - (rate - 1) * (rate - 1);
-					break;
-				}
-				this.rate = rate;
-				this.index = i;
-				return;
-			}
-			time2 = time1;
-		}
-		this.rate = 0;
-		this.index = 0;
 	}
 
 	public boolean validate() {
