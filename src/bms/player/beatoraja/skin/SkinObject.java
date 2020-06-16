@@ -289,10 +289,8 @@ public abstract class SkinObject implements Disposable {
 				return;
 			}
 		}
-		skinAnimator.prepareTime(time, state);
-		draw = true;
-		if (!skinAnimator.draws()) {
-			draw = false;
+		draw = skinAnimator.prepareTime(time, state);
+		if (!draw) {
 			return;
 		}
 		for (int i = 0; i < off.length; i++) {

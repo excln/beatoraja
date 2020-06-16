@@ -29,7 +29,6 @@ public class SkinAnimator {
     private long starttime;
     private long endtime;
 
-    private boolean draw;
     private Rectangle region = new Rectangle();
     private Color color = new Color();
     private int angle;
@@ -88,20 +87,24 @@ public class SkinAnimator {
         endtime = dst[dst.length - 1].time;
     }
 
-    public void prepareTime(long time, MainState state) {
+    /**
+     * 時刻を更新してアニメーションの準備を行う
+     * @param time
+     * @param state
+     * @return 描画範囲内の時刻かどうか
+     */
+    public boolean prepareTime(long time, MainState state) {
         final TimerProperty timer = dsttimer;
-        draw = true;
 
         if (timer != null) {
             if (timer.isOff(state)) {
-                draw = false;
-                return;
+                return false;
             }
             time -= timer.get(state);
         }
 
         final long lasttime = endtime;
-        if( dstloop == -1) {
+        if (dstloop == -1) {
             if(time > endtime) {
                 time = -1;
             }
@@ -113,13 +116,13 @@ public class SkinAnimator {
             }
         }
         if (starttime > time) {
-            draw = false;
-            return;
+            return false;
         }
         nowtime = time;
         if (fixr == null || fixc == null || fixa == Integer.MIN_VALUE) {
             updateRate();
         }
+        return true;
     }
 
     private void updateRate() {
@@ -222,10 +225,6 @@ public class SkinAnimator {
 
     public int getAngle() {
         return angle;
-    }
-
-    public boolean draws() {
-        return draw;
     }
 
     public boolean validate() {
