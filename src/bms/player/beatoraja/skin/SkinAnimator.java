@@ -44,8 +44,8 @@ public class SkinAnimator {
 
     public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
                                int angle, int loop, TimerProperty timer) {
-        SkinObjectDestination obj = new SkinObjectDestination(time, new Rectangle(x, y, w, h), new Color(r / 255.0f,
-                g / 255.0f, b / 255.0f, a / 255.0f), angle, acc);
+        SkinObjectDestination obj = new SkinObjectDestination(time, new Rectangle(x, y, w, h),
+                new Color(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f), angle);
         if (dst.length == 0) {
             fixr = obj.region;
             fixc = obj.color;
@@ -249,16 +249,14 @@ public class SkinAnimator {
          * 描画領域
          */
         public final Rectangle region;
-        public final int acc;
         public final Color color;
         public final int angle;
 
-        public SkinObjectDestination(long time, Rectangle region, Color color, int angle, int acc) {
+        public SkinObjectDestination(long time, Rectangle region, Color color, int angle) {
             this.time = time;
             this.region = region;
             this.color = color;
             this.angle = angle;
-            this.acc = acc;
         }
     }
 }
