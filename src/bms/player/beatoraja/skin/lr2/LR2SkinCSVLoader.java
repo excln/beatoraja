@@ -906,7 +906,7 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 		skin.setOption(option);
 
 		for (SkinObject obj : skin.getAllSkinObjects()) {
-			if (obj instanceof SkinImage && obj.getAllDestination().length == 0) {
+			if (obj instanceof SkinImage && !obj.validate()) {
 				skin.removeSkinObject(obj);
 				Logger.getGlobal().warning("NO_DESTINATION : " + obj);
 			}

@@ -15,7 +15,6 @@ import bms.model.Mode;
 import bms.player.beatoraja.*;
 import bms.player.beatoraja.play.*;
 import bms.player.beatoraja.skin.*;
-import bms.player.beatoraja.skin.SkinObject.SkinObjectDestination;
 
 /**
  * LR2プレイスキンローダー
@@ -889,8 +888,7 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 	 */
 	public float getLaneCoverPosition() {
 		if(skin.laneCover != null) {
-			SkinObjectDestination[] dst = skin.laneCover.getAllDestination();
-			return dst[dst.length - 1].region.y;
+			return skin.laneCover.getLastPositionY();
 		}
 		return -1;
 	}
