@@ -85,7 +85,7 @@ public abstract class SkinObject implements Disposable {
 	public boolean draw;
 	public Rectangle region = new Rectangle();
 	public Color color = new Color();
-	public int angle;
+	public float angle;
 	private SkinOffset[] off = new SkinOffset[0];
 
 	private Rectangle tmpRect = new Rectangle();
@@ -334,7 +334,7 @@ public abstract class SkinObject implements Disposable {
 	}
 
 	protected void draw(SkinObjectRenderer sprite, TextureRegion image, float x, float y, float width, float height,
-			Color color, int angle) {
+			Color color, float angle) {
 		if (color == null || color.a == 0f || image == null) {
 			return;
 		}

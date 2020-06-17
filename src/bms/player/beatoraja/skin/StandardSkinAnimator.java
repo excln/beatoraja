@@ -203,7 +203,7 @@ public class StandardSkinAnimator implements SkinAnimator {
         }
     }
 
-    public int getAngle() {
+    public float getAngle() {
         if (fixa != Integer.MIN_VALUE) {
             return fixa;
         }
