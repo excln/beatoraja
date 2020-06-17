@@ -79,7 +79,7 @@ public abstract class SkinObject implements Disposable {
 	 */
 	private float centery;
 
-	private SkinAnimator skinAnimator = new SkinAnimator();
+	private StandardSkinAnimator skinAnimator = new StandardSkinAnimator();
 	
 	// 以下、高速化用
 	public boolean draw;
@@ -537,6 +537,11 @@ public abstract class SkinObject implements Disposable {
 
 	// FIXME: LR2スキン用の固有実装
 	public float getLastPositionY() {
+//		if (skinAnimator instanceof StandardSkinAnimator) {
+//			return ((StandardSkinAnimator) skinAnimator).getLastPositionY();
+//		} else {
+//			return 0;
+//		}
 		return skinAnimator.getLastPositionY();
 	}
 }
