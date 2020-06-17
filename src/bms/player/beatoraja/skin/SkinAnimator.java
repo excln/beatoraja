@@ -29,10 +29,6 @@ public class SkinAnimator {
     private long starttime;
     private long endtime;
 
-    private Rectangle region = new Rectangle();
-    private Color color = new Color();
-    private int angle;
-
     private Rectangle fixr = null;
     private Color fixc = null;
     private int fixa = Integer.MIN_VALUE;
@@ -157,7 +153,7 @@ public class SkinAnimator {
     /**
      * 指定して時間に応じた描画領域を返す
      */
-    public void prepareRegion() {
+    public void getRegion(Rectangle region) {
         if (fixr == null) {
             if (rate == 0) {
                 region.set(dst[index].region);
@@ -182,7 +178,7 @@ public class SkinAnimator {
         }
     }
 
-    public void prepareColor() {
+    public void getColor(Color color) {
         if (fixc != null) {
             color.set(fixc);
             return;
@@ -207,24 +203,11 @@ public class SkinAnimator {
         }
     }
 
-    public void prepareAngle() {
-        if (fixa != Integer.MIN_VALUE) {
-            angle = fixa;
-            return;
-        }
-        angle = (rate == 0 || acc == 3 ? dst[index].angle :  (int) (dst[index].angle + (dst[index + 1].angle - dst[index].angle) * rate));
-    }
-
-    public Rectangle getRegion() {
-        return region;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
     public int getAngle() {
-        return angle;
+        if (fixa != Integer.MIN_VALUE) {
+            return fixa;
+        }
+        return (rate == 0 || acc == 3 ? dst[index].angle :  (int) (dst[index].angle + (dst[index + 1].angle - dst[index].angle) * rate));
     }
 
     public boolean validate() {

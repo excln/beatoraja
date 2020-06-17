@@ -224,8 +224,7 @@ public abstract class SkinObject implements Disposable {
 	}
 
 	private void prepareRegion() {
-		skinAnimator.prepareRegion();
-		region.set(skinAnimator.getRegion());
+		skinAnimator.getRegion(region);
 		for (SkinOffset off : this.off) {
 			if (off != null) {
 				if (!relative) {
@@ -243,8 +242,7 @@ public abstract class SkinObject implements Disposable {
 	}
 
 	private void prepareColor() {
-		skinAnimator.prepareColor();
-		color.set(skinAnimator.getColor());
+		skinAnimator.getColor(color);
 		for (SkinOffset off :this.off) {
 			if (off != null) {
 				float a = color.a + (off.a / 255.0f);
@@ -259,7 +257,6 @@ public abstract class SkinObject implements Disposable {
 	}
 
 	private void prepareAngle() {
-		skinAnimator.prepareAngle();
 		angle = skinAnimator.getAngle();
 		for (SkinOffset off :this.off) {
 			if (off != null) {
