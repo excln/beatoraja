@@ -520,7 +520,10 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 					TextureRegion[] images = getSourceImage(values);
 					if (images != null) {
 						onmouse = new SkinImage(images, values[10], values[9]);
-						skin.setMouseRect(onmouse, values[12], values[6] - values[13] - values[15], values[14], values[15]);
+						onmouse.setMouseRect(values[12] * dstw / srcw,
+								(values[6] - values[13] - values[15]) * dsth / srch,
+								values[14] * dstw / srcw,
+								values[15] * dsth / srch);
 						skin.add(onmouse);
 					}
 				}

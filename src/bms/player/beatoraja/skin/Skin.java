@@ -96,10 +96,6 @@ public class Skin {
 				loop, timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null, op1, op2, op3, offset);
 	}
 
-	public void setMouseRect(SkinObject object, float x, float y, float w, float h) {
-		object.setMouseRect(x * dw, y * dh, w * dw, h * dh);
-	}
-
 	public SkinObject[] getAllSkinObjects() {
 		return objects.toArray(SkinObject.class);
 	}
