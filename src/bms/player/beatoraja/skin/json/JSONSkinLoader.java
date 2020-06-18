@@ -835,7 +835,7 @@ public class JSONSkinLoader extends SkinLoader {
 							Texture tex = getTexture(img.src, p);
 							if(tex != null) {
 								obj = new SkinHidden(getSourceImage(tex, img.x, img.y, img.w, img.h, img.divx, img.divy), img.timer, img.cycle);
-								((SkinHidden) obj).setDisapearLine((float) (img.disapearLine * skin.getScaleY()));
+								((SkinHidden) obj).setDisapearLine(img.disapearLine * skin.getScaleY());
 								((SkinHidden) obj).setDisapearLineLinkLift(img.isDisapearLineLinkLift);
 								int[] offsets = new int[dst.offsets.length + 2];
 								for(int i = 0; i < dst.offsets.length; i++) {
@@ -854,7 +854,7 @@ public class JSONSkinLoader extends SkinLoader {
 							Texture tex = getTexture(img.src, p);
 							if(tex != null) {
 								obj = new SkinHidden(getSourceImage(tex, img.x, img.y, img.w, img.h, img.divx, img.divy), img.timer, img.cycle);
-								((SkinHidden) obj).setDisapearLine((float) (img.disapearLine * skin.getScaleY()));
+								((SkinHidden) obj).setDisapearLine(img.disapearLine * skin.getScaleY());
 								((SkinHidden) obj).setDisapearLineLinkLift(img.isDisapearLineLinkLift);
 								int[] offsets = new int[dst.offsets.length + 2];
 								for(int i = 0; i < dst.offsets.length; i++) {

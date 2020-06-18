@@ -295,11 +295,11 @@ public class Skin {
 		return height;
 	}
 
-	public double getScaleX() {
+	public float getScaleX() {
 		return dw;
 	}
 
-	public double getScaleY() {
+	public float getScaleY() {
 		return dh;
 	}
 	

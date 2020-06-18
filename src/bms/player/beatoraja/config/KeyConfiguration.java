@@ -140,8 +140,8 @@ public class KeyConfiguration extends MainState {
 
 	public void render() {
 		final SpriteBatch sprite = main.getSpriteBatch();
-		final float scaleX = (float) getSkin().getScaleX();
-		final float scaleY = (float) getSkin().getScaleY();
+		final float scaleX = getSkin().getScaleX();
+		final float scaleY = getSkin().getScaleY();
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
