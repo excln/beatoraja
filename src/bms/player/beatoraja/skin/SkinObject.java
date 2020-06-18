@@ -91,6 +91,11 @@ public abstract class SkinObject implements Disposable {
 	private Rectangle tmpRect = new Rectangle();
 	private TextureRegion tmpImage = new TextureRegion();
 
+	// TODO: StandardSkinAnimator -> SkinAnimator
+	public void setAnimator(StandardSkinAnimator animator) {
+		skinAnimator = animator;
+	}
+
 	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
 	                           int blend, int filter, int angle, int center, int loop, int timer, int op1, int op2, int op3, int offset) {
 		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop,
@@ -221,6 +226,10 @@ public abstract class SkinObject implements Disposable {
 
 	public int getBlend() {
 		return this.dstblend;
+	}
+
+	public void setBlend(int blend) {
+		dstblend = blend;
 	}
 
 	private void prepareRegion() {
@@ -529,6 +538,12 @@ public abstract class SkinObject implements Disposable {
 
 	public void setFilter(int filter) {
 		dstfilter = filter;
+	}
+
+	public void setCenter(int center) {
+		dstcenter = center;
+		centerx = CENTERX[center];
+		centery = CENTERY[center];
 	}
 
 	public void setMouseRect(float x2, float y2, float w2, float h2) {

@@ -1226,6 +1226,9 @@ public class JSONSkinLoader extends SkinLoader {
 	}
 
 	private void setDestination(Skin skin, SkinObject obj, JsonSkin.Destination dst) {
+		float dx = skin.getScaleX();
+		float dy = skin.getScaleY();
+		StandardSkinAnimator animator = new StandardSkinAnimator();
 		JsonSkin.Animation prev = null;
 		for (JsonSkin.Animation a : dst.dst) {
 			if (prev == null) {
@@ -1253,18 +1256,21 @@ public class JSONSkinLoader extends SkinLoader {
 				a.g = (a.g == Integer.MIN_VALUE ? prev.g : a.g);
 				a.b = (a.b == Integer.MIN_VALUE ? prev.b : a.b);
 			}
-			if(dst.draw != null) {
-				skin.setDestination(obj, a.time, a.x, a.y, a.w, a.h, a.acc, a.a, a.r, a.g, a.b, dst.blend, dst.filter,
-						a.angle, dst.center, dst.loop, dst.timer, dst.draw);
-			} else {
-				skin.setDestination(obj, a.time, a.x, a.y, a.w, a.h, a.acc, a.a, a.r, a.g, a.b, dst.blend, dst.filter,
-						a.angle, dst.center, dst.loop, dst.timer, dst.op);
-			}
-			if (dst.mouseRect != null) {
-				skin.setMouseRect(obj, dst.mouseRect.x, dst.mouseRect.y, dst.mouseRect.w, dst.mouseRect.h);
-			}
+			animator.setDestination(a.time,
+					a.x * dx, a.y * dy, a.w * dx, a.h * dy,
+					a.acc, a.a, a.r, a.g, a.b,
+					a.angle, dst.loop, dst.timer);
 			prev = a;
 		}
+		obj.setAnimator(animator);
+
+		if (dst.mouseRect != null) {
+			obj.setMouseRect(dst.mouseRect.x * dx, dst.mouseRect.y * dy, dst.mouseRect.w * dx, dst.mouseRect.h * dy);
+		}
+
+		obj.setBlend(dst.blend);
+		obj.setFilter(dst.filter);
+		obj.setCenter(dst.center);
 
 		int[] offsets = new int[dst.offsets.length + 1];
 		for(int i = 0; i < dst.offsets.length; i++) {
