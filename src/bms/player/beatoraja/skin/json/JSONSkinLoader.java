@@ -1264,6 +1264,11 @@ public class JSONSkinLoader extends SkinLoader {
 		}
 		obj.setAnimator(animator);
 
+		if (dst.draw != null) {
+			obj.setDrawCondition(new BooleanProperty[]{dst.draw});
+		} else {
+			obj.setDrawCondition(dst.op);
+		}
 		if (dst.mouseRect != null) {
 			obj.setMouseRect(dst.mouseRect.x * dx, dst.mouseRect.y * dy, dst.mouseRect.w * dx, dst.mouseRect.h * dy);
 		}
