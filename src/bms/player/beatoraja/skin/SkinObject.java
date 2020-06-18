@@ -120,19 +120,6 @@ public abstract class SkinObject implements Disposable {
 	}
 
 	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
-	                           int blend, int filter, int angle, int center, int loop, int timer, BooleanProperty draw) {
-		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop,
-				timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null);
-		dstdraw = new BooleanProperty[] {draw};
-	}
-
-	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
-			int blend, int filter, int angle, int center, int loop, TimerProperty timer, int op1, int op2, int op3, int offset) {
-		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop, timer, new int[]{op1,op2,op3});
-		setOffsetID(offset);
-	}
-
-	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
 							   int blend, int filter, int angle, int center, int loop, TimerProperty timer, int op1, int op2, int op3, int[] offset) {
 		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop, timer, new int[]{op1,op2,op3});
 		setOffsetID(offset);
@@ -145,13 +132,7 @@ public abstract class SkinObject implements Disposable {
 			setDrawCondition(op);
 		}
 	}
-	
-	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
-			int blend, int filter, int angle, int center, int loop, TimerProperty timer, BooleanProperty draw) {
-		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop, timer);
-		dstdraw = new BooleanProperty[] {draw};
-	}
-	
+
 	private void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
 			int blend, int filter, int angle, int center, int loop, TimerProperty timer) {
 		skinAnimator.setDestination(time, x, y, w, h, acc, a, r, g, b, angle, loop, timer);
