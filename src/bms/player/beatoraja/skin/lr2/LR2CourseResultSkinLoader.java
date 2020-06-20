@@ -62,7 +62,7 @@ enum CourseCommand implements LR2SkinLoader.Command<LR2CourseResultSkinLoader> {
             int[] values = loader.parseInt(str);
             loader.gauge.x = values[3];
             loader.gauge.y = loader.src.height - values[4];
-            loader.skin.setDestination(loader.gaugeobj, values[2], loader.gauge.x, loader.gauge.y, loader.gauge.width, loader.gauge.height, values[7],
+            loader.setDestination(loader.gaugeobj, values[2], loader.gauge.x, loader.gauge.y, loader.gauge.width, loader.gauge.height, values[7],
                     values[8], values[9], values[10], values[11], values[12], values[13], values[14],
                     values[15], values[16], values[17], values[18], values[19], values[20], loader.readOffset(str, 21));
 
@@ -84,7 +84,7 @@ enum CourseCommand implements LR2SkinLoader.Command<LR2CourseResultSkinLoader> {
             int[] values = loader.parseInt(str);
             loader.gauge.x = values[3];
             loader.gauge.y = loader.src.height - values[4];
-            loader.skin.setDestination(loader.noteobj, values[2], loader.gauge.x, loader.gauge.y, loader.gauge.width, loader.gauge.height, values[7],
+            loader.setDestination(loader.noteobj, values[2], loader.gauge.x, loader.gauge.y, loader.gauge.width, loader.gauge.height, values[7],
                     values[8], values[9], values[10], values[11], values[12], values[13], values[14],
                     values[15], values[16], values[17], values[18], values[19], values[20], loader.readOffset(str, 21));
 

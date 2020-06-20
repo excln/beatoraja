@@ -104,7 +104,7 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 			public void execute(String[] str) {
 				int[] values = parseInt(str);
 				if (bga != null) {
-					skin.setDestination(bga, 0, values[3], srch - values[4] - values[6], values[5], values[6],
+					setDestination(bga, 0, values[3], srch - values[4] - values[6], values[5], values[6],
 							values[7], values[8], values[9], values[10], values[11], values[12], values[13], values[14],
 							values[15], values[16], values[17], values[18], values[19], values[20], readOffset(str, 21));
 					bga.setStretch(stretch);
@@ -137,8 +137,8 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 						values[4] += values[6];
 						values[6] = -values[6];
 					}
-					lines[values[1]].setDestination(values[2], values[3] * dstw / srcw, dsth - (values[4] + values[6]) * dsth / srch,
-							values[5] * dstw / srcw, values[6] * dsth / srch, values[7], values[8], values[9],
+					setDestination(lines[values[1]], values[2], values[3], srch - (values[4] + values[6]),
+							values[5], values[6], values[7], values[8], values[9],
 							values[10], values[11], values[12], values[13], values[14], values[15], values[16],
 							values[17], values[18], values[19], values[20], readOffset(str, 21, new int[]{OFFSET_LIFT}));
 					if(playerr[values[1] % 2] != null) {
@@ -346,15 +346,15 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 							values[4] += values[6];
 							values[6] = -values[6];
 						}
-						judge[0].getJudge()[values[1] <= 5  ? (5 - values[1]) : values[1]].setDestination(values[2], values[3] * dstw / srcw,
-								dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-								values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+						setDestination(judge[0].getJudge()[values[1] <= 5  ? (5 - values[1]) : values[1]],
+								values[2], values[3], srch - (values[4] + values[6]), values[5],
+								values[6], values[7], values[8], values[9], values[10], values[11],
 								values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 								values[19], values[20], readOffset(str, 21, new int[]{OFFSET_JUDGE_1P, OFFSET_LIFT}));
 
 						if (!detail) {
 							detail = true;
-							addJudgeDetail(skin, values, srcw, dstw, srch, dsth, 0);
+							addJudgeDetail(skin, values, 0);
 						}
 
 					} catch (NumberFormatException e) {
@@ -398,15 +398,15 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 							values[4] += values[6];
 							values[6] = -values[6];
 						}
-						judge[1].getJudge()[values[1] <= 5  ? (5 - values[1]) : values[1]].setDestination(values[2], values[3] * dstw / srcw,
-								dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-								values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+						setDestination(judge[1].getJudge()[values[1] <= 5  ? (5 - values[1]) : values[1]],
+								values[2], values[3], srch - (values[4] + values[6]), values[5],
+								values[6], values[7], values[8], values[9], values[10], values[11],
 								values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 								values[19], values[20], readOffset(str, 21, new int[]{OFFSET_JUDGE_2P, OFFSET_LIFT}));
 
 						if (!detail) {
 							detail = true;
-							addJudgeDetail(skin, values, srcw, dstw, srch, dsth, 1);
+							addJudgeDetail(skin, values, 1);
 						}
 					} catch(Throwable e) {
 						e.printStackTrace();
@@ -449,15 +449,15 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 							values[4] += values[6];
 							values[6] = -values[6];
 						}
-						judge[2].getJudge()[values[1] <= 5  ? (5 - values[1]) : values[1]].setDestination(values[2], values[3] * dstw / srcw,
-								dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-								values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+						setDestination(judge[2].getJudge()[values[1] <= 5  ? (5 - values[1]) : values[1]],
+								values[2], values[3], srch - (values[4] + values[6]), values[5],
+								values[6], values[7], values[8], values[9], values[10], values[11],
 								values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 								values[19], values[20], readOffset(str, 21, new int[]{OFFSET_JUDGE_3P, OFFSET_LIFT}));
 
 						if (!detail) {
 							detail = true;
-							addJudgeDetail(skin, values, srcw, dstw, srch, dsth, 2);
+							addJudgeDetail(skin, values, 2);
 						}
 
 					} catch (NumberFormatException e) {
@@ -538,9 +538,9 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 						values[4] += values[6];
 						values[6] = -values[6];
 					}
-					line.setDestination(values[2], values[3] * dstw / srcw,
-							dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-							values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+					setDestination(line,
+							values[2], values[3], srch - (values[4] + values[6]), values[5],
+							values[6], values[7], values[8], values[9], values[10], values[11],
 							values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 							values[19], values[20], readOffset(str, 21, new int[]{OFFSET_LIFT}));
 				}
@@ -562,7 +562,7 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 				int[] values = parseInt(str);
 				gauge.x = values[3];
 				gauge.y = src.height - values[4];
-				skin.setDestination(noteobj, values[2], gauge.x, gauge.y, gauge.width, gauge.height, values[7], values[8],
+				setDestination(noteobj, values[2], gauge.x, gauge.y, gauge.width, gauge.height, values[7], values[8],
 						values[9], values[10], values[11], values[12], values[13], values[14], values[15],
 						values[16], values[17], values[18], values[19], values[20], readOffset(str, 21));
 			}
@@ -584,7 +584,7 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 				int[] values = parseInt(str);
 				gauge.x = values[3];
 				gauge.y = src.height - values[4];
-				skin.setDestination(bpmgraphobj, values[2], gauge.x, gauge.y, gauge.width, gauge.height, values[7], values[8],
+				setDestination(bpmgraphobj, values[2], gauge.x, gauge.y, gauge.width, gauge.height, values[7], values[8],
 						values[9], values[10], values[11], values[12], values[13], values[14], values[15],
 						values[16], values[17], values[18], values[19], values[20], readOffset(str, 21));
 			}
@@ -606,7 +606,7 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 				int[] values = parseInt(str);
 				gauge.x = values[3];
 				gauge.y = src.height - values[4];
-				skin.setDestination(timingobj, values[2], gauge.x, gauge.y, gauge.width, gauge.height, values[7], values[8],
+				setDestination(timingobj, values[2], gauge.x, gauge.y, gauge.width, gauge.height, values[7], values[8],
 						values[9], values[10], values[11], values[12], values[13], values[14], values[15],
 						values[16], values[17], values[18], values[19], values[20], readOffset(str, 21));
 			}
@@ -674,8 +674,9 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 			if(sj.getJudgeCount()[values[1] <= 5  ? (5 - values[1]) : values[1]].getAlign() == 2) {
 				x -= sj.getJudgeCount()[values[1] <= 5  ? (5 - values[1]) : values[1]].getKeta() * values[5] / 2;
 			}
-			sj.getJudgeCount()[values[1] <= 5  ? (5 - values[1]) : values[1]].setDestination(values[2], x * dstw / srcw,
-					-values[4] * dsth / srch, values[5] * dstw / srcw, values[6] * dsth / srch, values[7],
+			setDestination(sj.getJudgeCount()[values[1] <= 5  ? (5 - values[1]) : values[1]],
+					values[2], x,
+					-values[4], values[5], values[6], values[7],
 					values[8], values[9], values[10], values[11], values[12], values[13], values[14],
 					values[15], values[16], values[17], values[18], values[19], values[20], offset);
 		}
@@ -706,11 +707,11 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 		}
 	}
 
-	private static void addJudgeDetail(Skin skin, int[] values, float srcw, float dstw, float srch, float dsth, int side) {
+	private void addJudgeDetail(Skin skin, int[] values, int side) {
 		Texture tex = new Texture("skin/default/judgedetail.png");
 
-		final float dw = dstw / 1280f;
-		final float dh = dsth / 720f;
+		final float dw = srcw / 1280f;
+		final float dh = srch / 720f;
 
 		final int[] JUDGE_TIMER = { TIMER_JUDGE_1P, TIMER_JUDGE_2P, TIMER_JUDGE_3P };
 		final int[] OPTION_EARLY = { OPTION_1P_EARLY, OPTION_2P_EARLY, OPTION_3P_EARLY };
@@ -721,19 +722,19 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 		final int[] OFFSET_JUDGE_DETAIL = { OFFSET_JUDGEDETAIL_1P, OFFSET_JUDGEDETAIL_2P, OFFSET_JUDGEDETAIL_3P };
 
 		SkinImage early = new SkinImage(new TextureRegion(tex, 0, 0, 50,20));
-		early.setDestination(0, (values[3] + values[5] / 2) * dstw / srcw,
-				dsth - (values[4] - 5) * dsth / srch, 40 * dw, 16 * dh, 0, 255,
+		setDestination(early, 0, values[3] + values[5] / 2,
+				srch - (values[4] - 5), 40 * dw, 16 * dh, 0, 255,
 				255, 255, 255, 0, 0, 0, 0, -1, JUDGE_TIMER[side], 1998, 0, OPTION_EARLY[side], new int[]{OFFSET_JUDGE_DETAIL[side], OFFSET_LIFT});
-		early.setDestination(500, (values[3] + values[5] / 2) * dstw / srcw,
-				dsth - (values[4] - 5) * dsth / srch, 40 * dw, 16 * dh, 0, 255,
+		setDestination(early, 500, values[3] + values[5] / 2,
+				srch - (values[4] - 5), 40 * dw, 16 * dh, 0, 255,
 				255, 255, 255, 0, 0, 0, 0, -1, JUDGE_TIMER[side], 1998, 0, OPTION_EARLY[side], new int[]{OFFSET_JUDGE_DETAIL[side], OFFSET_LIFT});
 		skin.add(early);
 		SkinImage late = new SkinImage(new TextureRegion(tex, 50, 0, 50,20));
-		late.setDestination(0, (values[3] + values[5] / 2) * dstw / srcw,
-				dsth - (values[4] - 5) * dsth / srch, 40 * dw, 16 * dh, 0, 255,
+		setDestination(late, 0, values[3] + values[5] / 2,
+				srch - (values[4] - 5), 40 * dw, 16 * dh, 0, 255,
 				255, 255, 255, 0, 0, 0, 0, -1, JUDGE_TIMER[side], 1998, 0, OPTION_LATE[side], new int[]{OFFSET_JUDGE_DETAIL[side], OFFSET_LIFT});
-		late.setDestination(500, (values[3] + values[5] / 2) * dstw / srcw,
-				dsth - (values[4] - 5) * dsth / srch, 40 * dw, 16 * dh, 0, 255,
+		setDestination(late, 500, values[3] + values[5] / 2,
+				srch - (values[4] - 5), 40 * dw, 16 * dh, 0, 255,
 				255, 255, 255, 0, 0, 0, 0, -1, JUDGE_TIMER[side], 1998, 0, OPTION_LATE[side], new int[]{OFFSET_JUDGE_DETAIL[side], OFFSET_LIFT});
 		skin.add(late);
 
@@ -741,21 +742,21 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 		SkinNumber num = new SkinNumber(new TextureRegion[][] { images[1] },
 				new TextureRegion[][] { images[2] }, 0, 0, 4, 0, values[15], VALUE_JUDGE_DURATION[side]);
 		num.setAlign(values[12]);
-		num.setDestination(0, (values[3] + values[5] / 2) * dstw / srcw,
-				dsth - (values[4] - 5) * dsth / srch, 8 * dw, 16 * dh, 0, 255,
+		setDestination(num, 0, values[3] + values[5] / 2,
+				srch - (values[4] - 5), 8 * dw, 16 * dh, 0, 255,
 				255, 255, 255, 0, 0, 0, 0, -1, JUDGE_TIMER[side], 1999, 0, OPTION_PERFECT[side], new int[]{OFFSET_JUDGE_DETAIL[side], OFFSET_LIFT});
-		num.setDestination(500, (values[3] + values[5] / 2) * dstw / srcw,
-				dsth - (values[4] - 5) * dsth / srch, 8 * dw, 16 * dh, 0, 255,
+		setDestination(num, 500, values[3] + values[5] / 2,
+				srch - (values[4] - 5), 8 * dw, 16 * dh, 0, 255,
 				255, 255, 255, 0, 0, 0, 0, -1, JUDGE_TIMER[side], 1999, 0, OPTION_PERFECT[side], new int[]{OFFSET_JUDGE_DETAIL[side], OFFSET_LIFT});
 		skin.add(num);
 		SkinNumber num2 = new SkinNumber(new TextureRegion[][] { images[3] },
 				new TextureRegion[][] { images[4] }, 0, 0, 4, 0, values[15], VALUE_JUDGE_DURATION[side]);
 		num2.setAlign(values[12]);
-		num2.setDestination(0, (values[3] + values[5] / 2) * dstw / srcw,
-				dsth - (values[4] - 5) * dsth / srch, 8 * dw, 16 * dh, 0, 255,
+		setDestination(num2, 0, values[3] + values[5] / 2,
+				srch - (values[4] - 5), 8 * dw, 16 * dh, 0, 255,
 				255, 255, 255, 0, 0, 0, 0, -1, JUDGE_TIMER[side], 1999, 0, -(OPTION_PERFECT[side]), new int[]{OFFSET_JUDGE_DETAIL[side], OFFSET_LIFT});
-		num2.setDestination(500, (values[3] + values[5] / 2) * dstw / srcw,
-				dsth - (values[4] - 5) * dsth / srch, 8 * dw, 16 * dh, 0, 255,
+		setDestination(num2, 500, values[3] + values[5] / 2,
+				srch - (values[4] - 5), 8 * dw, 16 * dh, 0, 255,
 				255, 255, 255, 0, 0, 0, 0, -1, JUDGE_TIMER[side], 1999, 0, -(OPTION_PERFECT[side]), new int[]{OFFSET_JUDGE_DETAIL[side], OFFSET_LIFT});
 		skin.add(num2);
 	}
@@ -784,9 +785,9 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 			values[4] += values[6];
 			values[6] = -values[6];
 		}
-		hidden.setDestination(values[2], values[3] * dstw / srcw,
-				dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-				values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+		setDestination(hidden, values[2], values[3],
+				srch - (values[4] + values[6]), values[5],
+				values[6], values[7], values[8], values[9], values[10], values[11],
 				values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 				values[19], values[20], readOffset(str, 21, offset));
 	}
@@ -877,8 +878,8 @@ public class LR2PlaySkinLoader extends LR2SkinCSVLoader<PlaySkin> {
 		int[] values = parseInt(linevalues[index % 2]);
 		SkinImage li = new SkinImage(new TextureRegion(tex, 0, 0, 1,1));
 		lines[index] = li;
-		lines[index].setDestination(values[2], values[3] * dstw / srcw, dsth - (values[4] + values[6]) * dsth / srch,
-				values[5] * dstw / srcw, values[6] * dsth / srch * h, values[7], 255, r, g,
+		setDestination(lines[index], values[2], values[3], srch - (values[4] + values[6]),
+				values[5], values[6] * h, values[7], 255, r, g,
 				b, values[12], values[13], values[14], values[15], values[16],
 				values[17], values[18], values[19], values[20], readOffset(linevalues[index % 2], 21, new int[]{OFFSET_LIFT}));
 	}

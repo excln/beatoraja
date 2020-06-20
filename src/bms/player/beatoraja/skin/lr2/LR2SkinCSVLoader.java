@@ -214,9 +214,9 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 						values[4] += values[6];
 						values[6] = -values[6];
 					}
-					part.setDestination(values[2], values[3] * dstw / srcw,
-							dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-							values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+					setDestination(part, values[2], values[3],
+							srch - (values[4] + values[6]), values[5],
+							values[6], values[7], values[8], values[9], values[10], values[11],
 							values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 							values[19], values[20], readOffset(str, 21));
 					part.setStretch(stretch);
@@ -278,8 +278,8 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 			public void execute(String[] str) {
 				if (num != null) {
 					int[] values = parseInt(str);
-					num.setDestination(values[2], values[3] * dstw / srcw, dsth - (values[4] + values[6]) * dsth / srch,
-							values[5] * dstw / srcw, values[6] * dsth / srch, values[7], values[8], values[9],
+					setDestination(num, values[2], values[3], srch - (values[4] + values[6]),
+							values[5], values[6], values[7], values[8], values[9],
 							values[10], values[11], values[12], values[13], values[14], values[15], values[16],
 							values[17], values[18], values[19], values[20], readOffset(str, 21));
 				}
@@ -313,9 +313,9 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 			public void execute(String[] str) {
 				if (text != null) {
 					int[] values = parseInt(str);
-					text.setDestination(values[2], values[3] * dstw / srcw,
-							dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-							values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+					setDestination(text, values[2], values[3],
+							srch - (values[4] + values[6]), values[5],
+							values[6], values[7], values[8], values[9], values[10], values[11],
 							values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 							values[19], values[20], readOffset(str, 21));
 					if(skin instanceof MusicSelectSkin && ((MusicSelectSkin) skin).searchText == text) {
@@ -375,9 +375,9 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 			public void execute(String[] str) {
 				if (slider != null) {
 					int[] values = parseInt(str);
-					slider.setDestination(values[2], values[3] * dstw / srcw,
-							dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-							values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+					setDestination(slider, values[2], values[3],
+							srch - (values[4] + values[6]), values[5],
+							values[6], values[7], values[8], values[9], values[10], values[11],
 							values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 							values[19], values[20], readOffset(str, 21));
 				}
@@ -441,8 +441,8 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 						values[4] += values[6];
 						values[6] = -values[6];
 					}
-					bar.setDestination(values[2], values[3] * dstw / srcw, dsth - (values[4] + values[6]) * dsth / srch,
-							values[5] * dstw / srcw, values[6] * dsth / srch, values[7], values[8], values[9],
+					setDestination(bar, values[2], values[3], srch - (values[4] + values[6]),
+							values[5], values[6], values[7], values[8], values[9],
 							values[10], values[11], values[12], values[13], values[14], values[15], values[16],
 							values[17], values[18], values[19], values[20], readOffset(str, 21));
 				}
@@ -504,9 +504,9 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 			public void execute(String[] str) {
 				if (button != null) {
 					int[] values = parseInt(str);
-					button.setDestination(values[2], values[3] * dstw / srcw,
-							dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-							values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+					setDestination(button, values[2], values[3],
+							srch - (values[4] + values[6]), values[5],
+							values[6], values[7], values[8], values[9], values[10], values[11],
 							values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 							values[19], values[20], readOffset(str, 21));
 				}
@@ -536,9 +536,9 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 			public void execute(String[] str) {
 				if (onmouse != null) {
 					int[] values = parseInt(str);
-					onmouse.setDestination(values[2], values[3] * dstw / srcw,
-							dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-							values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+					setDestination(onmouse, values[2], values[3],
+							srch - (values[4] + values[6]), values[5],
+							values[6], values[7], values[8], values[9], values[10], values[11],
 							values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 							values[19], values[20], readOffset(str, 21));
 				}
@@ -706,14 +706,14 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 			@Override
 			public void execute(String[] str) {
 				if (gauger != null) {
-					float width = (Math.abs(groovex) >= 1) ? (groovex * 50 * dstw / srcw)
-							: (Integer.parseInt(str[5]) * dstw / srcw);
-					float height = (Math.abs(groovey) >= 1) ? (groovey * 50 * dsth / srch)
-							: (Integer.parseInt(str[6]) * dsth / srch);
-					float x = Integer.parseInt(str[3]) * dstw / srcw - (groovex < 0 ? groovex * dstw / srcw : 0);
-					float y = dsth - Integer.parseInt(str[4]) * dsth / srch - height;
+					float width = (Math.abs(groovex) >= 1) ? (groovex * 50)
+							: (Integer.parseInt(str[5]));
+					float height = (Math.abs(groovey) >= 1) ? (groovey * 50)
+							: (Integer.parseInt(str[6]));
+					float x = Integer.parseInt(str[3]) - (groovex < 0 ? groovex : 0);
+					float y = srch - Integer.parseInt(str[4]) - height;
 					int[] values = parseInt(str);
-					gauger.setDestination(values[2], x, y, width, height, values[7],
+					setDestination(gauger, values[2], x, y, width, height, values[7],
 							values[8], values[9], values[10], values[11], values[12], values[13], values[14],
 							values[15], values[16], values[17], values[18], values[19], values[20], readOffset(str, 21));
 				}
@@ -815,9 +815,9 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 						values[4] += values[6];
 						values[6] = -values[6];
 					}
-					PMcharaPart.setDestination(values[2], values[3] * dstw / srcw,
-							dsth - (values[4] + values[6]) * dsth / srch, values[5] * dstw / srcw,
-							values[6] * dsth / srch, values[7], values[8], values[9], values[10], values[11],
+					setDestination(PMcharaPart, values[2], values[3],
+							srch - (values[4] + values[6]), values[5],
+							values[6], values[7], values[8], values[9], values[10], values[11],
 							values[12], values[13], values[14], values[15], values[16], values[17], values[18],
 							values[19], values[20], readOffset(str, 21));
 				}
