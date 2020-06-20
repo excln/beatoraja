@@ -453,15 +453,16 @@ public class PomyuCharaLoader {
 										part.setCenter(0);
 										part.setDrawCondition(op);
 										part.setOffsetID(dstOffset);
-										TimerProperty timerProperty = timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null;
+										animator.setLoop(-1);
+										animator.setTimer(timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null);
 										for(int i = 0; i < (loopFrame+increaseRate); i++) {
 											animator.setDestination((int)(frameTime*i),
 													dstx+dstxywh[i][0]*dstw/size[0], dsty+dsth-(dstxywh[i][1]+dstxywh[i][3])*dsth/size[1], dstxywh[i][2]*dstw/size[0], dstxywh[i][3]*dsth/size[1],
-													3, alphaAngle[i][0],255,255,255,alphaAngle[i][1],-1, timerProperty);
+													3, alphaAngle[i][0],255,255,255,alphaAngle[i][1]);
 										}
 										animator.setDestination(loopTime-1,
 												dstx+dstxywh[(loopFrame+increaseRate)-1][0]*dstw/size[0], dsty+dsth-(dstxywh[(loopFrame+increaseRate)-1][1]+dstxywh[(loopFrame+increaseRate)-1][3])*dsth/size[1], dstxywh[(loopFrame+increaseRate)-1][2]*dstw/size[0], dstxywh[(loopFrame+increaseRate)-1][3]*dsth/size[1],
-												3,alphaAngle[(loopFrame+increaseRate)-1][0],255,255,255, alphaAngle[(loopFrame+increaseRate)-1][1],-1,timerProperty);
+												3,alphaAngle[(loopFrame+increaseRate)-1][0],255,255,255, alphaAngle[(loopFrame+increaseRate)-1][1]);
 										part.setAnimator(animator);
 									}
 									//ループ開始フレームから
@@ -479,16 +480,17 @@ public class PomyuCharaLoader {
 									part.setCenter(0);
 									part.setDrawCondition(op);
 									part.setOffsetID(dstOffset);
-									TimerProperty timerProperty = timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null;
+									animator.setLoop(loopTime);
+									animator.setTimer(timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null);
 									for(int i = (loopFrame+increaseRate); i < dstxywh.length; i++) {
 										animator.setDestination((int)(frameTime*i),
 												dstx+dstxywh[i][0]*dstw/size[0], dsty+dsth-(dstxywh[i][1]+dstxywh[i][3])*dsth/size[1], dstxywh[i][2] * dstw / size[0], dstxywh[i][3] * dsth / size[1],
-												3,alphaAngle[i][0],255,255,255, alphaAngle[i][1],loopTime,timerProperty);
+												3,alphaAngle[i][0],255,255,255, alphaAngle[i][1]);
 									}
 									animator.setDestination(cycle,
 											dstx+dstxywh[dstxywh.length-1][0]*dstw/size[0], dsty+dsth-(dstxywh[dstxywh.length-1][1]+dstxywh[dstxywh.length-1][3])*dsth/size[1],
 											dstxywh[dstxywh.length-1][2] * dstw / size[0], dstxywh[dstxywh.length-1][3] * dsth / size[1],3,alphaAngle[dstxywh.length-1][0],
-											255,255,255,alphaAngle[dstxywh.length-1][1],loopTime,timerProperty);
+											255,255,255,alphaAngle[dstxywh.length-1][1]);
 									part.setAnimator(animator);
 								}
 							}

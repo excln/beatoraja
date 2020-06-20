@@ -1230,6 +1230,8 @@ public class JSONSkinLoader extends SkinLoader {
 		float dy = skin.getScaleY();
 		if (dst.dst.length > 0) {
 			StandardSkinAnimator animator = new StandardSkinAnimator();
+			animator.setLoop(dst.loop);
+			animator.setTimer(dst.timer);
 			JsonSkin.Animation prev = null;
 			for (JsonSkin.Animation a : dst.dst) {
 				if (prev == null) {
@@ -1259,8 +1261,7 @@ public class JSONSkinLoader extends SkinLoader {
 				}
 				animator.setDestination(a.time,
 						a.x * dx, a.y * dy, a.w * dx, a.h * dy,
-						a.acc, a.a, a.r, a.g, a.b,
-						a.angle, dst.loop, dst.timer);
+						a.acc, a.a, a.r, a.g, a.b, a.angle);
 				prev = a;
 			}
 			obj.setAnimator(animator);

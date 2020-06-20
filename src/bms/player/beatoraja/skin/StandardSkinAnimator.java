@@ -39,6 +39,16 @@ public class StandardSkinAnimator implements SkinAnimator {
 
     public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
                                int angle, int loop, TimerProperty timer) {
+        if (dsttimer == null) {
+            dsttimer = timer;
+        }
+        if (dstloop == 0) {
+            dstloop = loop;
+        }
+        setDestination(time, x, y, w, h, acc, a, r, g, b, angle);
+    }
+
+    public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b, int angle) {
         SkinObjectDestination obj = new SkinObjectDestination(time, new Rectangle(x, y, w, h),
                 new Color(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f), angle);
         if (dst.length == 0) {
@@ -60,12 +70,6 @@ public class StandardSkinAnimator implements SkinAnimator {
             this.acc = acc;
         }
 
-        if (dsttimer == null) {
-            dsttimer = timer;
-        }
-        if (dstloop == 0) {
-            dstloop = loop;
-        }
         for (int i = 0; i < dst.length; i++) {
             if (dst[i].time > time) {
                 Array<SkinObjectDestination> l = new Array<>(dst);
@@ -81,6 +85,14 @@ public class StandardSkinAnimator implements SkinAnimator {
         dst = l.toArray(SkinObjectDestination.class);
         starttime = dst[0].time;
         endtime = dst[dst.length - 1].time;
+    }
+
+    public void setLoop(int loop) {
+        dstloop = loop;
+    }
+
+    public void setTimer(TimerProperty timer) {
+        dsttimer = timer;
     }
 
     /**
