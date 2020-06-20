@@ -1228,41 +1228,43 @@ public class JSONSkinLoader extends SkinLoader {
 	private void setDestination(Skin skin, SkinObject obj, JsonSkin.Destination dst) {
 		float dx = skin.getScaleX();
 		float dy = skin.getScaleY();
-		StandardSkinAnimator animator = new StandardSkinAnimator();
-		JsonSkin.Animation prev = null;
-		for (JsonSkin.Animation a : dst.dst) {
-			if (prev == null) {
-				a.time = (a.time == Integer.MIN_VALUE ? 0 : a.time);
-				a.x = (a.x == Integer.MIN_VALUE ? 0 : a.x);
-				a.y = (a.y == Integer.MIN_VALUE ? 0 : a.y);
-				a.w = (a.w == Integer.MIN_VALUE ? 0 : a.w);
-				a.h = (a.h == Integer.MIN_VALUE ? 0 : a.h);
-				a.acc = (a.acc == Integer.MIN_VALUE ? 0 : a.acc);
-				a.angle = (a.angle == Integer.MIN_VALUE ? 0 : a.angle);
-				a.a = (a.a == Integer.MIN_VALUE ? 255 : a.a);
-				a.r = (a.r == Integer.MIN_VALUE ? 255 : a.r);
-				a.g = (a.g == Integer.MIN_VALUE ? 255 : a.g);
-				a.b = (a.b == Integer.MIN_VALUE ? 255 : a.b);
-			} else {
-				a.time = (a.time == Integer.MIN_VALUE ? prev.time : a.time);
-				a.x = (a.x == Integer.MIN_VALUE ? prev.x : a.x);
-				a.y = (a.y == Integer.MIN_VALUE ? prev.y : a.y);
-				a.w = (a.w == Integer.MIN_VALUE ? prev.w : a.w);
-				a.h = (a.h == Integer.MIN_VALUE ? prev.h : a.h);
-				a.acc = (a.acc == Integer.MIN_VALUE ? prev.acc : a.acc);
-				a.angle = (a.angle == Integer.MIN_VALUE ? prev.angle : a.angle);
-				a.a = (a.a == Integer.MIN_VALUE ? prev.a : a.a);
-				a.r = (a.r == Integer.MIN_VALUE ? prev.r : a.r);
-				a.g = (a.g == Integer.MIN_VALUE ? prev.g : a.g);
-				a.b = (a.b == Integer.MIN_VALUE ? prev.b : a.b);
+		if (dst.dst.length > 0) {
+			StandardSkinAnimator animator = new StandardSkinAnimator();
+			JsonSkin.Animation prev = null;
+			for (JsonSkin.Animation a : dst.dst) {
+				if (prev == null) {
+					a.time = (a.time == Integer.MIN_VALUE ? 0 : a.time);
+					a.x = (a.x == Integer.MIN_VALUE ? 0 : a.x);
+					a.y = (a.y == Integer.MIN_VALUE ? 0 : a.y);
+					a.w = (a.w == Integer.MIN_VALUE ? 0 : a.w);
+					a.h = (a.h == Integer.MIN_VALUE ? 0 : a.h);
+					a.acc = (a.acc == Integer.MIN_VALUE ? 0 : a.acc);
+					a.angle = (a.angle == Integer.MIN_VALUE ? 0 : a.angle);
+					a.a = (a.a == Integer.MIN_VALUE ? 255 : a.a);
+					a.r = (a.r == Integer.MIN_VALUE ? 255 : a.r);
+					a.g = (a.g == Integer.MIN_VALUE ? 255 : a.g);
+					a.b = (a.b == Integer.MIN_VALUE ? 255 : a.b);
+				} else {
+					a.time = (a.time == Integer.MIN_VALUE ? prev.time : a.time);
+					a.x = (a.x == Integer.MIN_VALUE ? prev.x : a.x);
+					a.y = (a.y == Integer.MIN_VALUE ? prev.y : a.y);
+					a.w = (a.w == Integer.MIN_VALUE ? prev.w : a.w);
+					a.h = (a.h == Integer.MIN_VALUE ? prev.h : a.h);
+					a.acc = (a.acc == Integer.MIN_VALUE ? prev.acc : a.acc);
+					a.angle = (a.angle == Integer.MIN_VALUE ? prev.angle : a.angle);
+					a.a = (a.a == Integer.MIN_VALUE ? prev.a : a.a);
+					a.r = (a.r == Integer.MIN_VALUE ? prev.r : a.r);
+					a.g = (a.g == Integer.MIN_VALUE ? prev.g : a.g);
+					a.b = (a.b == Integer.MIN_VALUE ? prev.b : a.b);
+				}
+				animator.setDestination(a.time,
+						a.x * dx, a.y * dy, a.w * dx, a.h * dy,
+						a.acc, a.a, a.r, a.g, a.b,
+						a.angle, dst.loop, dst.timer);
+				prev = a;
 			}
-			animator.setDestination(a.time,
-					a.x * dx, a.y * dy, a.w * dx, a.h * dy,
-					a.acc, a.a, a.r, a.g, a.b,
-					a.angle, dst.loop, dst.timer);
-			prev = a;
+			obj.setAnimator(animator);
 		}
-		obj.setAnimator(animator);
 
 		if (dst.draw != null) {
 			obj.setDrawCondition(new BooleanProperty[]{dst.draw});
