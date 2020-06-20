@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import bms.player.beatoraja.skin.property.TimerProperty;
+import bms.player.beatoraja.skin.property.TimerPropertyFactory;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -279,7 +280,6 @@ public class PomyuCharaLoader {
 					//ダミー用
 					Pixmap pixmap = new Pixmap( 1, 1, Format.RGBA8888 );
 					Texture transparent = new Texture( pixmap );
-					SkinImage part = null;
 					//#Pattern,#Texture,#Layerの順に描画設定を行う
 					int[] setBMPIndex = {CharBMPIndex,CharTexIndex,CharBMPIndex};
 					for(int patternIndex = 0; patternIndex < 3; patternIndex++) {
@@ -445,12 +445,24 @@ public class PomyuCharaLoader {
 											if(index >= 0 && index < xywh.length && xywh[index][2] > 0 && xywh[index][3] > 0) images[i/2] = new TextureRegion(setBMP, xywh[index][0], xywh[index][1], xywh[index][2], xywh[index][3]);
 											else images[i/2] = new TextureRegion(transparent, 0, 0, 1, 1);
 										}
-										part = new SkinImage(images, timer, loopTime);
+										SkinImage part = new SkinImage(images, timer, loopTime);
+										StandardSkinAnimator animator = new StandardSkinAnimator();
 										skin.add(part);
+										part.setBlend(1);
+										part.setFilter(0);
+										part.setCenter(0);
+										part.setDrawCondition(op);
+										part.setOffsetID(dstOffset);
+										TimerProperty timerProperty = timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null;
 										for(int i = 0; i < (loopFrame+increaseRate); i++) {
-											part.setDestination((int)(frameTime*i),dstx+dstxywh[i][0]*dstw/size[0], dsty+dsth-(dstxywh[i][1]+dstxywh[i][3])*dsth/size[1], dstxywh[i][2]*dstw/size[0], dstxywh[i][3]*dsth/size[1],3,alphaAngle[i][0],255,255,255,1,0,alphaAngle[i][1],0,-1,timer,op[0],op[1],op[2],0);
+											animator.setDestination((int)(frameTime*i),
+													dstx+dstxywh[i][0]*dstw/size[0], dsty+dsth-(dstxywh[i][1]+dstxywh[i][3])*dsth/size[1], dstxywh[i][2]*dstw/size[0], dstxywh[i][3]*dsth/size[1],
+													3, alphaAngle[i][0],255,255,255,alphaAngle[i][1],-1, timerProperty);
 										}
-										part.setDestination(loopTime-1,dstx+dstxywh[(loopFrame+increaseRate)-1][0]*dstw/size[0], dsty+dsth-(dstxywh[(loopFrame+increaseRate)-1][1]+dstxywh[(loopFrame+increaseRate)-1][3])*dsth/size[1], dstxywh[(loopFrame+increaseRate)-1][2]*dstw/size[0], dstxywh[(loopFrame+increaseRate)-1][3]*dsth/size[1],3,alphaAngle[(loopFrame+increaseRate)-1][0],255,255,255,1,0,alphaAngle[(loopFrame+increaseRate)-1][1],0,-1,timer,op[0],op[1],op[2],dstOffset);
+										animator.setDestination(loopTime-1,
+												dstx+dstxywh[(loopFrame+increaseRate)-1][0]*dstw/size[0], dsty+dsth-(dstxywh[(loopFrame+increaseRate)-1][1]+dstxywh[(loopFrame+increaseRate)-1][3])*dsth/size[1], dstxywh[(loopFrame+increaseRate)-1][2]*dstw/size[0], dstxywh[(loopFrame+increaseRate)-1][3]*dsth/size[1],
+												3,alphaAngle[(loopFrame+increaseRate)-1][0],255,255,255, alphaAngle[(loopFrame+increaseRate)-1][1],-1,timerProperty);
+										part.setAnimator(animator);
 									}
 									//ループ開始フレームから
 									TextureRegion[] images = new TextureRegion[dst[0].length() / 2 - (loop[motion]+1)];
@@ -459,12 +471,25 @@ public class PomyuCharaLoader {
 										if(index >= 0 && index < xywh.length && xywh[index][2] > 0 && xywh[index][3] > 0) images[i/2-(loop[motion]+1)] = new TextureRegion(setBMP, xywh[index][0], xywh[index][1], xywh[index][2], xywh[index][3]);
 										else images[i/2-(loop[motion]+1)] = new TextureRegion(transparent, 0, 0, 1, 1);
 									}
-									part = new SkinImage(images, timer, cycle - loopTime);
+									SkinImage part = new SkinImage(images, timer, cycle - loopTime);
+									StandardSkinAnimator animator = new StandardSkinAnimator();
 									skin.add(part);
+									part.setBlend(1);
+									part.setFilter(0);
+									part.setCenter(0);
+									part.setDrawCondition(op);
+									part.setOffsetID(dstOffset);
+									TimerProperty timerProperty = timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null;
 									for(int i = (loopFrame+increaseRate); i < dstxywh.length; i++) {
-										part.setDestination((int)(frameTime*i),dstx+dstxywh[i][0]*dstw/size[0], dsty+dsth-(dstxywh[i][1]+dstxywh[i][3])*dsth/size[1], dstxywh[i][2] * dstw / size[0], dstxywh[i][3] * dsth / size[1],3,alphaAngle[i][0],255,255,255,1,0,alphaAngle[i][1],0,loopTime,timer,op[0],op[1],op[2],0);
+										animator.setDestination((int)(frameTime*i),
+												dstx+dstxywh[i][0]*dstw/size[0], dsty+dsth-(dstxywh[i][1]+dstxywh[i][3])*dsth/size[1], dstxywh[i][2] * dstw / size[0], dstxywh[i][3] * dsth / size[1],
+												3,alphaAngle[i][0],255,255,255, alphaAngle[i][1],loopTime,timerProperty);
 									}
-									part.setDestination(cycle,dstx+dstxywh[dstxywh.length-1][0]*dstw/size[0], dsty+dsth-(dstxywh[dstxywh.length-1][1]+dstxywh[dstxywh.length-1][3])*dsth/size[1], dstxywh[dstxywh.length-1][2] * dstw / size[0], dstxywh[dstxywh.length-1][3] * dsth / size[1],3,alphaAngle[dstxywh.length-1][0],255,255,255,1,0,alphaAngle[dstxywh.length-1][1],0,loopTime,timer,op[0],op[1],op[2],dstOffset);
+									animator.setDestination(cycle,
+											dstx+dstxywh[dstxywh.length-1][0]*dstw/size[0], dsty+dsth-(dstxywh[dstxywh.length-1][1]+dstxywh[dstxywh.length-1][3])*dsth/size[1],
+											dstxywh[dstxywh.length-1][2] * dstw / size[0], dstxywh[dstxywh.length-1][3] * dsth / size[1],3,alphaAngle[dstxywh.length-1][0],
+											255,255,255,alphaAngle[dstxywh.length-1][1],loopTime,timerProperty);
+									part.setAnimator(animator);
 								}
 							}
 						}

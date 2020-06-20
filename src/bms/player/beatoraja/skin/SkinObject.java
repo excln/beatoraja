@@ -101,34 +101,6 @@ public abstract class SkinObject implements Disposable {
 		skinAnimator.setDestination(0, x, y, w, h, 0, a, r, g, b, angle, 0, null);
 	}
 
-	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
-	                           int blend, int filter, int angle, int center, int loop, int timer, int op1, int op2, int op3, int offset) {
-		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop,
-				timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null);
-		if (dstop.length == 0 && dstdraw.length == 0) {
-			setDrawCondition(new int[]{op1,op2,op3});
-		}
-		setOffsetID(offset);
-	}
-
-	private void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
-			int blend, int filter, int angle, int center, int loop, TimerProperty timer) {
-		skinAnimator.setDestination(time, x, y, w, h, acc, a, r, g, b, angle, loop, timer);
-		if (dstblend == 0) {
-			dstblend = blend;
-		}
-
-		if (dstfilter == 0) {
-			dstfilter = filter;
-		}
-		
-		if (dstcenter == 0 && center >= 0 && center < 10) {
-			dstcenter = center;
-			centerx = CENTERX[center];
-			centery = CENTERY[center];
-		}
-	}
-
 	public BooleanProperty[] getDrawCondition() {
 		return dstdraw;
 	}
