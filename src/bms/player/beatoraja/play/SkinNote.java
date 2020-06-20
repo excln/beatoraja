@@ -28,13 +28,13 @@ public class SkinNote extends SkinObject {
 		for(int i = 0;i < lanes.length;i++) {
 			lanes[i] = new SkinLane(note[i],longnote[i], minenote[i]);
 		}
-		
-        this.setDestination(0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, new int[0]);
+
+		setStaticDestination(0, 0, 0, 0, 0, 255, 255, 255, 0);
 	}
 
 	public void setLaneRegion(Rectangle[] region, float[] scale, int[] dstnote2, Skin skin) {
 		for(int i = 0;i < lanes.length;i++) {
-			lanes[i].setDestination(0,region[i].x, region[i].y, region[i].width, region[i].height, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+			lanes[i].setStaticDestination(region[i].x, region[i].y, region[i].width, region[i].height, 255, 255, 255, 255, 0);
 			lanes[i].scale =  scale[i];
 			lanes[i].dstnote2 =  dstnote2[i];
 		}

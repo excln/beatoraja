@@ -76,9 +76,9 @@ public class PracticeConfiguration {
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 18;
 		titlefont = generator.generateFont(parameter);
-		
+
 		for(int i = 0; i < graph.length; i++) {
-			graph[i].setDestination(0, 0, 0, 0, 0, 0, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, new int[0]);
+			graph[i].setStaticDestination(0, 0, 0, 0, 255, 255, 255, 255, 0);
 		}
 	}
 

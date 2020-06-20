@@ -96,34 +96,19 @@ public abstract class SkinObject implements Disposable {
 		skinAnimator = animator;
 	}
 
+	public void setStaticDestination(float x, float y, float w, float h, int a, int r, int g, int b, int angle) {
+		skinAnimator = new StandardSkinAnimator();
+		skinAnimator.setDestination(0, x, y, w, h, 0, a, r, g, b, angle, 0, null);
+	}
+
 	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
 	                           int blend, int filter, int angle, int center, int loop, int timer, int op1, int op2, int op3, int offset) {
 		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop,
-				timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null, new int[]{op1,op2,op3});
-		setOffsetID(offset);
-	}
-
-	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
-	                           int blend, int filter, int angle, int center, int loop, int timer, int[] op) {
-		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop,
 				timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null);
 		if (dstop.length == 0 && dstdraw.length == 0) {
-			setDrawCondition(op);
+			setDrawCondition(new int[]{op1,op2,op3});
 		}
-	}
-
-	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
-							   int blend, int filter, int angle, int center, int loop, TimerProperty timer, int op1, int op2, int op3, int[] offset) {
-		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop, timer, new int[]{op1,op2,op3});
 		setOffsetID(offset);
-	}
-
-	public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
-			int blend, int filter, int angle, int center, int loop, TimerProperty timer, int[] op) {
-		setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop, timer);
-		if (dstop.length == 0 && dstdraw.length == 0) {
-			setDrawCondition(op);
-		}
 	}
 
 	private void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,

@@ -93,7 +93,8 @@ public class SkinBar extends SkinObject {
 
     public SkinBar(int position) {
         this.position = position;
-        this.setDestination(0, 0, 0, 0, 0, 0, 0, 255, 255, 255, 0, 0, 0, 0, 0, 0, new int[0]);
+
+        this.setStaticDestination(0, 0, 0, 0, 0, 255, 255, 255, 0);
     }
 
     public void setBarImage(SkinImage[] onimage, SkinImage[] offimage) {
