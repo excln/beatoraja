@@ -79,7 +79,7 @@ public abstract class SkinObject implements Disposable {
 	 */
 	private float centery;
 
-	private StandardSkinAnimator skinAnimator = new StandardSkinAnimator();
+	private SkinAnimator skinAnimator;
 	
 	// 以下、高速化用
 	public boolean draw;
@@ -91,14 +91,14 @@ public abstract class SkinObject implements Disposable {
 	private Rectangle tmpRect = new Rectangle();
 	private TextureRegion tmpImage = new TextureRegion();
 
-	// TODO: StandardSkinAnimator -> SkinAnimator
-	public void setAnimator(StandardSkinAnimator animator) {
+	public void setAnimator(SkinAnimator animator) {
 		skinAnimator = animator;
 	}
 
 	public void setStaticDestination(float x, float y, float w, float h, int a, int r, int g, int b, int angle) {
-		skinAnimator = new StandardSkinAnimator();
-		skinAnimator.setDestination(0, x, y, w, h, 0, a, r, g, b, angle, 0, null);
+		StandardSkinAnimator animator = new StandardSkinAnimator();
+		animator.setDestination(0, x, y, w, h, 0, a, r, g, b, angle, 0, null);
+		this.skinAnimator = animator;
 	}
 
 	public BooleanProperty[] getDrawCondition() {
@@ -206,7 +206,7 @@ public abstract class SkinObject implements Disposable {
 	}
 
 	public boolean validate() {
-		return skinAnimator.validate();
+		return skinAnimator != null && skinAnimator.validate();
 	}
 
 	/**
@@ -483,11 +483,10 @@ public abstract class SkinObject implements Disposable {
 
 	// FIXME: LR2スキン用の固有実装
 	public float getLastPositionY() {
-//		if (skinAnimator instanceof StandardSkinAnimator) {
-//			return ((StandardSkinAnimator) skinAnimator).getLastPositionY();
-//		} else {
-//			return 0;
-//		}
-		return skinAnimator.getLastPositionY();
+		if (skinAnimator instanceof StandardSkinAnimator) {
+			return ((StandardSkinAnimator) skinAnimator).getLastPositionY();
+		} else {
+			return 0;
+		}
 	}
 }
