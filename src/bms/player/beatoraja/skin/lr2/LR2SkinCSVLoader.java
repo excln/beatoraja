@@ -4,6 +4,8 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -19,14 +21,12 @@ import bms.player.beatoraja.select.MusicSelectSkin;
 import bms.player.beatoraja.skin.*;
 import bms.player.beatoraja.skin.SkinHeader.*;
 
+import bms.player.beatoraja.skin.property.TimerProperty;
+import bms.player.beatoraja.skin.property.TimerPropertyFactory;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.IntArray;
-import com.badlogic.gdx.utils.IntIntMap;
-import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.*;
 
 /**
  * LR2のスキン定義用csvファイルのローダー
@@ -52,6 +52,8 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 	protected S skin;
 
 	private MainState state;
+
+	private Map<SkinObject, DestinationBuilder> destinationBuilderMap = new HashMap<>();
 
 	public LR2SkinCSVLoader(Resolution src, Config c) {
 		this.src = src;
@@ -908,6 +910,11 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 
 		skin.setOption(option);
 
+		for (Map.Entry<SkinObject,DestinationBuilder> e : destinationBuilderMap.entrySet()) {
+			e.getValue().submit(e.getKey());
+		}
+		destinationBuilderMap.clear();
+
 		for (SkinObject obj : skin.getAllSkinObjects()) {
 			if (obj instanceof SkinImage && !obj.validate()) {
 				skin.removeSkinObject(obj);
@@ -976,6 +983,38 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 			}
 		}
 		return images;
+	}
+
+	protected DestinationBuilder getDestinationBuilder(SkinObject obj) {
+		DestinationBuilder builder = destinationBuilderMap.get(obj);
+		if (builder == null) {
+			builder = new DestinationBuilder(this);
+			destinationBuilderMap.put(obj, builder);
+		}
+		return builder;
+	}
+
+	protected void setDestination(SkinObject obj, long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
+								  int blend, int filter, int angle, int center, int loop, int timer, int op1, int op2, int op3, int offset) {
+		DestinationBuilder builder = getDestinationBuilder(obj);
+		builder.setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop, timer);
+		builder.setDstOp(new int[] {op1, op2, op3});
+		builder.setOffsetID(offset);
+	}
+
+	protected void setDestination(SkinObject obj, long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
+								  int blend, int filter, int angle, int center, int loop, int timer, int op1, int op2, int op3, int[] offset) {
+		DestinationBuilder builder = getDestinationBuilder(obj);
+		builder.setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop, timer);
+		builder.setDstOp(new int[] {op1, op2, op3});
+		builder.setOffsetID(offset);
+	}
+
+	protected void setDestination(SkinObject obj, long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
+								  int blend, int filter, int angle, int center, int loop, int timer, int[] op) {
+		DestinationBuilder builder = getDestinationBuilder(obj);
+		builder.setDestination(time, x, y, w, h, acc, a, r, g, b, blend, filter, angle, center, loop, timer);
+		builder.setDstOp(op);
 	}
 
 	public S loadSkin(Path f, MainState state, SkinHeader header, IntIntMap option, SkinConfig.Property property) throws IOException {
@@ -1063,6 +1102,64 @@ public abstract class LR2SkinCSVLoader<S extends Skin> extends LR2SkinLoader {
 			return new LR2SkinSelectSkinLoader(src, c);
 		}
 		return null;
+	}
+
+	protected static class DestinationBuilder {
+		private Skin skin;
+		private StandardSkinAnimator animator = new StandardSkinAnimator();
+		private int dstblend = 0;
+		private int dstfilter = 0;
+		private int dstcenter = 0;
+		private IntArray offsets = new IntArray();
+		private IntArray dstop = new IntArray();
+
+		public DestinationBuilder(LR2SkinCSVLoader loader) {
+			skin = loader.skin;
+		}
+
+		public void submit(SkinObject obj) {
+			obj.setAnimator(animator);
+			obj.setBlend(dstblend);
+			obj.setFilter(dstfilter);
+			obj.setCenter(dstcenter);
+			obj.setOffsetID(offsets.toArray());
+			obj.setDrawCondition(dstop.toArray());
+		}
+
+		public void setDestination(long time, float x, float y, float w, float h, int acc, int a, int r, int g, int b,
+									int blend, int filter, int angle, int center, int loop, int timer) {
+			TimerProperty timerProperty = timer > 0 ? TimerPropertyFactory.getTimerProperty(timer) : null;
+			animator.setDestination(time,
+					x * skin.getScaleX(), y * skin.getScaleY(), w * skin.getScaleX(), h * skin.getScaleY(),
+					acc, a, r, g, b, angle, loop, timerProperty);
+			if (dstblend == 0) {
+				dstblend = blend;
+			}
+			if (dstfilter == 0) {
+				dstfilter = filter;
+			}
+			if (dstcenter == 0 && center >= 0 && center < 10) {
+				dstcenter = center;
+			}
+		}
+
+		public void setOffsetID(int[] offset) {
+			for (int o : offset) {
+				setOffsetID(o);
+			}
+		}
+
+		public void setOffsetID(int offset) {
+			if (offset > 0 && offset < SkinProperty.OFFSET_MAX + 1) {
+				this.offsets.add(offset);
+			}
+		}
+
+		public void setDstOp(int[] op) {
+			if (dstop.size == 0) {
+				dstop.addAll(op);
+			}
+		}
 	}
 }
 
