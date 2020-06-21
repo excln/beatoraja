@@ -17,7 +17,7 @@ public class ScriptableSkinAnimator implements SkinAnimator {
     }
 
     public boolean validate() {
-        return animation != null && animation.validate();
+        return animation != null;
     }
 
     public boolean prepareTime(long time, MainState state) {

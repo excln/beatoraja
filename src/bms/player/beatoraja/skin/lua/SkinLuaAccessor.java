@@ -259,41 +259,41 @@ public class SkinLuaAccessor {
 	}
 
 	public AnimationProperty loadAnimationProperty(LuaTable table) {
-		return new AnimationProperty() {
-			private final LuaFunction updater = table.get("update").checkfunction();
+		try {
+			return new AnimationProperty() {
+				private final LuaFunction updater = table.get("update").checkfunction();
 
-			@Override
-			public boolean validate() {
-				return table != null && updater != null;
-			}
+				@Override
+				public boolean update(long time) {
+					LuaValue result = updater.call(table, LuaValue.valueOf(time));
+					return result.toboolean();
+				}
 
-			@Override
-			public boolean update(long time) {
-				LuaValue result = updater.call(table, LuaValue.valueOf(time));
-				return result.toboolean();
-			}
+				@Override
+				public void getRegion(Rectangle region) {
+					region.x = table.get("x").tofloat();
+					region.y = table.get("y").tofloat();
+					region.width = table.get("w").tofloat();
+					region.height = table.get("h").tofloat();
+				}
 
-			@Override
-			public void getRegion(Rectangle region) {
-				region.x = table.get("x").tofloat();
-				region.y = table.get("y").tofloat();
-				region.width = table.get("w").tofloat();
-				region.height = table.get("h").tofloat();
-			}
+				@Override
+				public void getColor(Color color) {
+					color.r = table.get("r").tofloat();
+					color.g = table.get("g").tofloat();
+					color.b = table.get("b").tofloat();
+					color.a = table.get("a").tofloat();
+				}
 
-			@Override
-			public void getColor(Color color) {
-				color.r = table.get("r").tofloat();
-				color.g = table.get("g").tofloat();
-				color.b = table.get("b").tofloat();
-				color.a = table.get("a").tofloat();
-			}
-
-			@Override
-			public float getAngle() {
-				return table.get("angle").tofloat();
-			}
-		};
+				@Override
+				public float getAngle() {
+					return table.get("angle").tofloat();
+				}
+			};
+		} catch (RuntimeException e) {
+			Logger.getGlobal().warning("Lua解析時の例外 : " + e.getMessage());
+			return null;
+		}
 	}
 
 	public LuaValue exec(String script) {
