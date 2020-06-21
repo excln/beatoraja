@@ -95,6 +95,7 @@ public class LuaSkinLoader extends JSONSkinLoader {
 					serializeLuaScript(lv, lua::loadFloatWriter, lua::loadFloatWriter, FloatPropertyFactory::getFloatWriter));
 			put(Event.class, lv ->
 					serializeLuaScript(lv, lua::loadEvent, lua::loadEvent, EventFactory::getEvent));
+			put(AnimationProperty.class, LuaSkinLoader.this::serializeAnimationProperty);
 		}
 	};
 
@@ -105,6 +106,14 @@ public class LuaSkinLoader extends JSONSkinLoader {
 			return byId.apply(lv.toint());
 		} else if (lv.isstring()) {
 			return asScript.apply(lv.tojstring());
+		} else {
+			return null;
+		}
+	}
+
+	private AnimationProperty serializeAnimationProperty(LuaValue lv) {
+		if (lv.istable()) {
+			return lua.loadAnimationProperty(lv.checktable());
 		} else {
 			return null;
 		}

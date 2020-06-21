@@ -375,6 +375,7 @@ public class JsonSkin {
 		public int[] op = new int[0];
 		public BooleanProperty draw;
 		public Animation[] dst = new Animation[0];
+		public AnimationProperty animation;
 		public Rect mouseRect;
 	}
 

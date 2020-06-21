@@ -4,6 +4,8 @@ import java.nio.file.Path;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Rectangle;
 import org.luaj.vm2.*;
 import org.luaj.vm2.lib.*;
 import org.luaj.vm2.lib.jse.JsePlatform;
@@ -252,6 +254,44 @@ public class SkinLuaAccessor {
 				} catch (RuntimeException e) {
 					Logger.getGlobal().warning("Lua実行時の例外：" + e.getMessage());
 				}
+			}
+		};
+	}
+
+	public AnimationProperty loadAnimationProperty(LuaTable table) {
+		return new AnimationProperty() {
+			private final LuaFunction updater = table.get("update").checkfunction();
+
+			@Override
+			public boolean validate() {
+				return table != null && updater != null;
+			}
+
+			@Override
+			public boolean update(long time) {
+				LuaValue result = updater.call(table, LuaValue.valueOf(time));
+				return result.toboolean();
+			}
+
+			@Override
+			public void getRegion(Rectangle region) {
+				region.x = table.get("x").tofloat();
+				region.y = table.get("y").tofloat();
+				region.width = table.get("w").tofloat();
+				region.height = table.get("h").tofloat();
+			}
+
+			@Override
+			public void getColor(Color color) {
+				color.r = table.get("r").tofloat();
+				color.g = table.get("g").tofloat();
+				color.b = table.get("b").tofloat();
+				color.a = table.get("a").tofloat();
+			}
+
+			@Override
+			public float getAngle() {
+				return table.get("angle").tofloat();
 			}
 		};
 	}

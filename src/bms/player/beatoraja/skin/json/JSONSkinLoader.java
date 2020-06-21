@@ -1228,7 +1228,9 @@ public class JSONSkinLoader extends SkinLoader {
 	private void setDestination(Skin skin, SkinObject obj, JsonSkin.Destination dst) {
 		float dx = skin.getScaleX();
 		float dy = skin.getScaleY();
-		if (dst.dst.length > 0) {
+		if (dst.animation != null) {
+			obj.setAnimator(new ScriptableSkinAnimator(skin, dst.animation));
+		} else if (dst.dst.length > 0) {
 			StandardSkinAnimator animator = new StandardSkinAnimator();
 			animator.setLoop(dst.loop);
 			animator.setTimer(dst.timer);
